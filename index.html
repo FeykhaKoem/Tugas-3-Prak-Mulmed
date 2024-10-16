@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 2</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px 20px 0px 20px;
+            background-color: #ffcae9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .content {
+            background-color: #fff0f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .footer {
+            background-color: #ffcae9;
+            text-align: center;
+            padding-top: 10px;
+            border-radius: 8px;
+            /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
+        }
+        video, audio {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <h1>HTML Multimedia-API</h1>
+        <p>Modul ini membahas berbagai bentuk multimedia dalam HTML seperti audio, video, dan penggunaan API.</p>
+
+        <h2>1. Audio dalam HTML</h2>
+        <p>Elemen <code>&lt;audio&gt;</code> digunakan untuk menyematkan file audio ke dalam halaman web.</p>
+        
+        <audio controls>
+            <source src="C:\xampp\htdocs\Tugas Mulmed\Tugas 3\Wendy (Red Velvet) John Legend - Written In The Stars [128 kbps].mp3" type=" audio/mp3">
+            <source src="Wendy (Red Velvet) John Legend - Written In The Stars [128 kbps].mp3" type="audio/mp3">
+            Browser Anda tidak mendukung elemen audio.
+        </audio>
+
+        <h2>2. Video dalam HTML</h2>
+        <p>Elemen <code>&lt;video&gt;</code> digunakan untuk menyematkan file video ke dalam halaman web.</p>
+
+        <video width="400" controls>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            <source src="mov_bbb.ogg" type="video/ogg">
+            Browser Anda tidak mendukung elemen video.
+        </video>
+
+
+        <h2>3. Menyematkan Video dari YouTube</h2>
+        <p>Anda dapat menyematkan video dari YouTube menggunakan elemen <code>&lt;iframe&gt;</code>.</p>
+
+        <iframe width="420" height="315" src="https://www.youtube.com/embed/iciFwCnsyY4?si=xR0xjfQi6fvPUjig" frameborder="0" allowfullscreen></iframe>
+
+
+        <h2>4. Geolocation API</h2>
+        <p>API Geolocation digunakan untuk mendapatkan posisi geografis pengguna.</p>
+        
+        <button onclick="getLocation()">Dapatkan Lokasi Saya</button>
+        <p id="demo"></p>
+        
+        <div id="map"></div>
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+        <script>
+            let map, marker;
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else { 
+                    document.getElementById("demo").innerHTML = "Geolocation tidak didukung oleh browser ini.";
+                }
+            }
+
+            function showPosition(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                document.getElementById("demo").innerHTML = "Latitude: " + lat + 
+                "<br>Longitude: " + lon;
+
+                if (!map) {
+                    map = L.map('map').setView([lat, lon], 13); 
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                }
+
+               
+                if (marker) {
+                    marker.setLatLng([lat, lon]).bindPopup("Lokasi Anda").openPopup();
+                } else {
+                    marker = L.marker([lat, lon]).addTo(map).bindPopup("Lokasi Anda").openPopup();
+                }
+
+                map.setView([lat, lon], 13);
+            }
+
+            function showError(error) {
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        document.getElementById("demo").innerHTML = "Pengguna menolak permintaan Geolocation.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        document.getElementById("demo").innerHTML = "Informasi lokasi tidak tersedia.";
+                        break;
+                    case error.TIMEOUT:
+                        document.getElementById("demo").innerHTML = "Permintaan untuk mendapatkan lokasi melampaui batas waktu.";
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        document.getElementById("demo").innerHTML = "Terjadi kesalahan yang tidak diketahui.";
+                        break;
+                }
+            }
+        </script>
+
+    </div>
+
+     <!-- Footer -->
+    
+     <footer>
+        <div class="footer">
+            <p><b>Create By: Feykha Nurulillah Amaliah Koem (220211060326)</b></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
